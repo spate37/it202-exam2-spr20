@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Sanket</title>
+</head>
+<body>
+  <ul id="persons"></ul>
+</body>
+</html>
+
+<script type="text/javascript">
+  let createelement = (element) => {
+      return document.createElement(element);
+  }
+
+  let appendelement = (parent, el) => {
+    return parent.appendChild(el);
+  }
+
+  const ul = document.getElementById('persons');
+  const url = 'https://randomuser.me/api/?results=7&gender=female&nat=us,ca';
+  fetch(url)
+  .then((resp) => resp.json())
+  .then(function(data) {
+    let persons = data.results;
+    return persons.map(function(author,key) {
+      let li = createelement('li'),
+          img = createelement('img'),
+          h2 = createelement('h2');
+          span = createelement('span');
+          address = createelement('span');
+          anchor = createelement('a');
+      img.src = author.picture.thumbnail;
+      h2.innerHTML = 'Name :' + `${author.name.title} ${author.name.first} ${author.name.last}`;
+      span.innerHTML = 'DOB :' + `${author.dob.date}`;
+      address.innerHTML = 'Address :' +`${author.location.street.number} ${author.location.street.name} ${author.location.city} ${author.location.state} ${author.location.postcode} ${author.location.country} `;
+      //icon.classList.add("fa fa-ellipsis-v icon");
+      anchor.setAttribute('id',"icon-"+key);
+      anchor.setAttribute('target',"_blank");
+      anchor.setAttribute('href',author.picture.large);
+      anchor.innerHTML = '<i class="fa fa-ellipsis-v"></i>clickme';
+      appendelement(li, h2);
+      appendelement(li, span);
+      appendelement(li, address);
+      appendelement(li, img);
+      appendelement(li, anchor);
+      appendelement(ul, li);
+    })
+  })
+  .catch(function(error) {
+    console.log(JSON.stringify(error));
+  });  
+</script>
